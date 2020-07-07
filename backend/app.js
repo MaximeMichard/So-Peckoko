@@ -1,13 +1,13 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const path= require ('path');
+const express = require('express'); // Importation package Express //
+const bodyParser = require('body-parser'); // Importation package BodyParser//
+const mongoose = require('mongoose'); //Importation package mongoose //
+const path= require ('path'); //Importation package Path // 
 
-const stuffRoutes = require('./routes/stuff');
-const userRoutes = require('./routes/user');
-const app = express();
+const stuffRoutes = require('./routes/stuff'); //Importation ficher Routes/stuff.js //
+const userRoutes = require('./routes/user'); //Importation ficher Routes/user.js //
+const app = express(); //Utilisation Express //
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { // CORS //
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
