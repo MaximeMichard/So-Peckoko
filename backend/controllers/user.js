@@ -1,11 +1,29 @@
-const bcrypt = require("bcrypt"); //Plug in pour hasher les passwords
-const jwt = require("jsonwebtoken"); //Plug in pour sécuriser la connection avec des tokens uniques
+const bcrypt = require("bcrypt"); //Plug in pour hasher les passwords //
+const jwt = require("jsonwebtoken"); //Plug in pour sécuriser la connection avec des tokens uniques //
 const User = require("../models/user"); //Importation du model User
+const passwordvalidator= require ('password-validator'); // Sécurité password // 
+
+const schema= new passwordvalidator();
+
+schema
+.is().min(8)                                    // Minimum length 8
+.is().max(100)                                  // Maximum length 100
+.has().uppercase()                              // Must have uppercase letters
+.has().lowercase()                              // Must have lowercase letters
+.has().digits()                                 // Must have digits
+.has().not().spaces()                           // Should not have spaces
+.is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
+
+//Inscription compte // 
 
 exports.signup = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10)
+  if (!schema.validate(req.body.password)){ // Si schéma correspond pas alors -> error //
+    throw { error: "Entre un mot de passe valide connard"}
+  }
+  else if (schema.validate(req.body.password)){ // Schéma correct exact le script //
+    bcrypt.hash(req.body.password, 10) // "Salage" mdp 10 fois (plus la valeur élevée -> plus de sécurité mais exec fonction lente) //
       .then(hash => {
-          const user = new User({
+          const user = new User({ //Création de l'utilisateur // 
               email: req.body.email,
               password: hash
           });
@@ -20,24 +38,25 @@ exports.signup = (req, res, next) => {
       .catch(error => res.status(500).json({
           error
       }));
+  } 
 };
 
-//Connection à un compte existant
+//Connection compte //
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (!user) {
+  User.findOne({ email: req.body.email }) // Utilisation models user pour check si l'email existe déjà dans la BDD // 
+    .then((user) => { 
+      if (!user) {// Renvoi message error si l'adresse n'existe pas //
         return res.status(401).json({ error: "Utilisateur non trouvé" });
       }
-      bcrypt
-        .compare(req.body.password, user.password) //compare le password soumis avec le password de la base de données
+      bcrypt // Utilisation fonction compare of bcript // 
+        .compare(req.body.password, user.password) //Compare le password avec celui de la BDD //
         .then((valid) => {
-          if (!valid) {
+          if (!valid) { // Mdp incorrect --> renvoi error //
             return res.status(401).json({ error: "Mot de passe incorrect" });
           }
-          res.status(200).json({
+          res.status(200).json({ // Mpd correct --> renvoi ID utilisateur & TOKEN // 
             userId: user._id,
-            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", { //TOKEN de 24h qui est généré
+            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", { //TOKEN de 24h qui est généré //
               expiresIn: "24h",
             }),
           });
