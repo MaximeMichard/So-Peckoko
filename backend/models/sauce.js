@@ -1,6 +1,6 @@
 const mongoose = require('mongoose'); //Schéma données avec l'aide de mongoose //
 
-const thingSchema = mongoose.Schema({
+const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },
   manufacturer: { type: String, required: true},
@@ -14,4 +14,4 @@ const thingSchema = mongoose.Schema({
   userDisliked: { type: [String], required: false},
 });
 
-module.exports = mongoose.model('Thing', thingSchema); // Exportation du schéma // 
+module.exports = mongoose.model('Sauce', sauceSchema); // Exportation du schéma // 

@@ -2,7 +2,6 @@ const mongoose= require ('mongoose'); // Schéma de donnée //
 const mongooseUniqueValidator = require('mongoose-unique-validator');// Plugin: Adresse MAIL Unique //
 
 const userSchema = mongoose.Schema({
-    userId: { type: String, required: true},
     email: { type: String, required: true},
     password: { type: String, required: true},
 });
