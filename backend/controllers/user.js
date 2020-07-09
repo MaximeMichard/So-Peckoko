@@ -18,7 +18,7 @@ schema
 
 exports.signup = (req, res, next) => {
   if (!schema.validate(req.body.password)){ // Si schéma correspond pas alors -> error //
-    throw { error: "Entre un mot de passe valide connard"}
+    console.log('Schéma non valide connard ! '); 
   }
   else if (schema.validate(req.body.password)){ // Schéma correct exact le script //
     bcrypt.hash(req.body.password, 10) // "Salage" mdp 10 fois (plus la valeur élevée -> plus de sécurité mais exec fonction lente) //
@@ -42,6 +42,7 @@ exports.signup = (req, res, next) => {
 };
 
 //Connection compte //
+
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) // Utilisation models user pour check si l'email existe déjà dans la BDD // 
     .then((user) => { 
