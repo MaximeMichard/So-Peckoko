@@ -14,7 +14,7 @@ schema
 .has().not().spaces()                           // Should not have spaces
 .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
 
-//Inscription compte // 
+//Inscription // 
 
 exports.signup = (req, res, next) => {
   if (!schema.validate(req.body.password)){ // Si schéma correspond pas alors -> error //
@@ -27,7 +27,7 @@ exports.signup = (req, res, next) => {
               email: req.body.email,
               password: hash
           });
-          user.save()
+          user.save() // Enregistrer dans la BDD //
               .then(() => res.status(201).json({
                   message: 'Utilisateur créé !'
               }))
@@ -41,7 +41,7 @@ exports.signup = (req, res, next) => {
   } 
 };
 
-//Connection compte //
+// Connection  //
 
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) // Utilisation models user pour check si l'email existe déjà dans la BDD // 
