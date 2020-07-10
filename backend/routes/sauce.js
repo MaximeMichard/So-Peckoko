@@ -9,7 +9,7 @@ const multer = require("../middleware/multer-config"); //Importation de multer, 
 router.get("/", auth, sauceCtrl.getAllSauces);
 router.get("/:id", auth, sauceCtrl.getOneSauce);
 router.post("/", auth, multer, sauceCtrl.createSauce);
-router.put("/:id", auth, multer, sauceCtrl.updateSauce);
+router.put("/:id", auth, multer, sauceCtrl.putSauce);
 router.delete("/:id", auth, sauceCtrl.deleteSauce);
 router.post("/:id/like", auth, multer, sauceCtrl.likeSauce);
 
