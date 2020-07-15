@@ -18,7 +18,7 @@ schema
 
 exports.signup = (req, res, next) => {
   if (!schema.validate(req.body.password)){ // Si schéma correspond pas alors -> error //
-    console.log('Schéma non valide connard ! '); 
+    throw "Schéma non valide !"; 
   }
   else if (schema.validate(req.body.password)){ // Schéma correct exact le script //
     bcrypt.hash(req.body.password, 10) // "Salage" mdp 10 fois (plus la valeur élevée -> plus de sécurité mais exec fonction lente) //
@@ -53,7 +53,7 @@ exports.login = (req, res, next) => {
         .compare(req.body.password, user.password) //Compare le password avec celui de la BDD //
         .then((valid) => {
           if (!valid) { // Mdp incorrect --> renvoi error //
-            return res.status(401).json({ error: "Mot de passe incorrect" });
+            return res.status(401).json({ error: "Login ou Mot de passe incorrect" });
           }
           res.status(200).json({ // Mpd correct --> renvoi ID utilisateur & TOKEN // 
             userId: user._id,
