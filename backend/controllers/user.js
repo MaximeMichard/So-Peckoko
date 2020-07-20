@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt"); //Plug in pour hasher les passwords //
 const jwt = require("jsonwebtoken"); //Plug in pour sécuriser la connection avec des tokens uniques //
 const User = require("../models/user"); //Importation du model User
 const passwordvalidator= require ('password-validator'); // Sécurité password // 
+require('dotenv').config();
 
 const schema= new passwordvalidator();
 
@@ -18,7 +19,9 @@ schema
 
 exports.signup = (req, res, next) => {
   if (!schema.validate(req.body.password)){ // Si schéma correspond pas alors -> error //
-    throw "Schéma non valide !"; 
+    res.status(401).json({
+      error: Error.message= 'Schéma incorrect ! '
+    });
   }
   else if (schema.validate(req.body.password)){ // Schéma correct exact le script //
     bcrypt.hash(req.body.password, 10) // "Salage" mdp 10 fois (plus la valeur élevée -> plus de sécurité mais exec fonction lente) //
@@ -57,7 +60,7 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({ // Mpd correct --> renvoi ID utilisateur & TOKEN // 
             userId: user._id,
-            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", { //TOKEN de 24h qui est généré //
+            token: jwt.sign({ userId: user._id }, `${process.env.DB_TOKEN}`, { //TOKEN de 24h qui est généré //
               expiresIn: "24h",
             }),
           });

@@ -34,4 +34,5 @@ app.use('/images', express.static(path.join(__dirname, 'images'))); // Applicati
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
 
+
 module.exports = app; // Exportation pour le fichier server.js //
