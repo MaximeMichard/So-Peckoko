@@ -18,7 +18,7 @@ app.use((req, res, next) => { // Middleware (CORS) //
 });
 
 //Connection Base de donnée //
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-1l7tk.gcp.mongodb.net/test?retryWrites=true&w=majority`,{
+mongoose.connect(`${process.env.DB_URL}`,{
     useNewUrlParser: true,  //deprecation warnings = avertissement fonctionnalité,biblio existante va être modifiée,supprimée,remplacée//
     useUnifiedTopology: true,
     useCreateIndex:true
