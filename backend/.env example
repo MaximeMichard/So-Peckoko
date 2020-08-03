@@ -1,2 +1,3 @@
 DB_PASS= password
 DB_USER= UserName
+DB_TOKEN= TOKEN
